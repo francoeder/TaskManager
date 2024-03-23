@@ -2,9 +2,15 @@
 {
     public abstract class Entity
     {
-        protected Entity(Guid id) => Id = id;
+        protected Entity(Guid id)
+        {
+            Id = id;
+        }
 
-        protected Entity() { }
+        protected Entity()
+        {
+            CreatedDate = DateTime.Now;
+        }
 
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; protected set; }
