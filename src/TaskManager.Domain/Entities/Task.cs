@@ -2,11 +2,10 @@
 
 namespace TaskManager.Domain.Entities
 {
-    public class Task : Entity
+    public class Task : TenantEntity
     {
         public string Title { get; set; }
         public string Details { get; set; }
         public DateTime DueDate { get; set; }
-        public string UserEmail { get; set; }
     }
 }

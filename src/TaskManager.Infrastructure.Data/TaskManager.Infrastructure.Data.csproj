@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj" />
+    <ProjectReference Include="..\TaskManager.Infrastructure.Http\TaskManager.Infrastructure.Http.csproj" />
   </ItemGroup>
 
 </Project>

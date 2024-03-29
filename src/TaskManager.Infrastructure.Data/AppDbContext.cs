@@ -4,6 +4,8 @@ namespace TaskManager.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
+        public DbSet<Domain.Entities.Task> Task { get; set; }
+
         public AppDbContext(DbContextOptions options)
             : base(options)
         {

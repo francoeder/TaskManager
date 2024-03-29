@@ -1,7 +1,6 @@
-using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Infrastructure.Data;
+using TaskManager.Infrastructure.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructureData(builder.Configuration, "DefaultConnection");
+builder.Services.AddInfrastructureHttp();
 
 var app = builder.Build();
 
@@ -37,13 +37,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
-static async Task ApplyMigrations(IServiceProvider serviceProvider)
-{
-    using var scope = serviceProvider.CreateScope();
-
-    await using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    await dbContext.Database.MigrateAsync();
-}

@@ -1,7 +1,10 @@
 ﻿namespace TaskManager.Domain.Abstractions.Entities
 {
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
+        public Guid Id { get; set; }
+        public DateTime CreatedDate { get; set; }
+
         protected Entity(Guid id)
         {
             Id = id;
@@ -11,8 +14,5 @@
         {
             CreatedDate = DateTime.Now;
         }
-
-        public Guid Id { get; set; }
-        public DateTime CreatedDate { get; protected set; }
     }
 }

@@ -1,12 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskManager.Infrastructure.Data.Configurations.Base;
+using TaskManager.Infrastructure.Http.Internal;
 
 namespace TaskManager.Infrastructure.Data.Configurations
 {
-    public class TaskConfiguration : IEntityTypeConfiguration<Domain.Entities.Task>
+    public class TaskConfiguration : TenantEntityConfiguration<Domain.Entities.Task>
     {
-        public void Configure(EntityTypeBuilder<Domain.Entities.Task> builder)
+        public TaskConfiguration(HttpContextProvider httpContextProvider)
+            : base(httpContextProvider)
         {
+        }
+
+        public override void Configure(EntityTypeBuilder<Domain.Entities.Task> builder)
+        {
+            base.Configure(builder);
+
             builder
                 .HasKey(entity => entity.Id);
 
@@ -21,11 +29,6 @@ namespace TaskManager.Infrastructure.Data.Configurations
 
             builder
                 .Property(entity => entity.DueDate)
-                .IsRequired();
-
-            builder
-                .Property(entity => entity.UserEmail)
-                .HasMaxLength(150)
                 .IsRequired();
         }
     }
