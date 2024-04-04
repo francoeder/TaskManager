@@ -16,12 +16,12 @@ builder.Services.AddInfrastructureHttp();
 
 var app = builder.Build();
 
-if (builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Internal"))
-{
-    using var scope = app.Services.CreateScope();
-    await using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await dbContext.Database.MigrateAsync();
-}
+//if (builder.Environment.IsDevelopment() || builder.Environment.IsEnvironment("Internal"))
+//{
+//    using var scope = app.Services.CreateScope();
+//    await using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    await dbContext.Database.MigrateAsync();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -8,11 +8,13 @@ namespace TaskManager.Infrastructure.Data.Configurations.Base
         where TEntity : class, ITenantEntity
     {
         private readonly HttpContextProvider _httpContextProvider;
+        private readonly Guid _tenantId;
 
         protected TenantEntityConfiguration(
             HttpContextProvider httpContextProvider)
         {
             _httpContextProvider = httpContextProvider;
+            _tenantId = _httpContextProvider.GetTenantId();
         }
 
         public override void Configure(EntityTypeBuilder<TEntity> builder)
@@ -20,8 +22,6 @@ namespace TaskManager.Infrastructure.Data.Configurations.Base
             base.Configure(builder);
 
             builder.HasIndex(x => x.TenantId);
-
-            builder.HasQueryFilter(t => t.TenantId == _httpContextProvider.GetTenantId());
         }
     }
 }

@@ -1,20 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManager.Infrastructure.Http.Internal;
 
 namespace TaskManager.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Domain.Entities.Task> Task { get; set; }
+        private readonly HttpContextProvider _httpContextProvider;
+        private readonly Guid _tenantId;
 
-        public AppDbContext(DbContextOptions options)
+        public AppDbContext(
+            DbContextOptions options,
+            HttpContextProvider httpContextProvider)
             : base(options)
         {
+            _httpContextProvider = httpContextProvider;
+            _tenantId = _httpContextProvider.GetTenantId();
         }
+
+        public DbSet<Domain.Entities.Task> Task { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+            modelBuilder.Entity<Domain.Entities.Task>(builder =>
+            {
+                builder.HasQueryFilter(t => t.TenantId == _tenantId);
+            });
         }
     }
 }
