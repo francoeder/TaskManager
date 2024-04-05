@@ -1,28 +1,34 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-using TaskManager.Domain.Abstractions.Repositories;
+using TaskManager.Api.Abstractions;
+using TaskManager.Application.Tasks.Commands.CreateTask;
+using TaskManager.Application.Tasks.Queries.GetTaskList;
 
 namespace TaskManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TaskController : ControllerBase
+    public class TaskController : ApiController
     {
-        private readonly IRepository<Domain.Entities.Task> _taskRepository;
-
-        public TaskController(
-            IRepository<Domain.Entities.Task> taskRepository)
+        public TaskController(IMediator mediator)
+            : base(mediator)
         {
-            _taskRepository = taskRepository;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTask(CreateTaskCommand command, CancellationToken cancellationToken)
+        {
+            var response = await Mediator.Send(command);
+
+            return response.IsSuccess ? Ok() : BadRequest(response.Error);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetTaskList([FromQuery] GetTaskListQuery query)
         {
-            var result = await _taskRepository.GetOrderedAsync<object>(default, task => task.DueDate, false);
+            var response = await Mediator.Send(query);
 
-            return Ok(result);
+            return response.IsSuccess ? Ok(response.Value) : NotFound(response.Error);
         }
     }
 }

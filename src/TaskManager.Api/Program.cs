@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using TaskManager.Infrastructure.Data;
 using TaskManager.Infrastructure.Http;
+using TaskManager.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructureData(builder.Configuration, "DefaultConnection");
 builder.Services.AddInfrastructureHttp();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

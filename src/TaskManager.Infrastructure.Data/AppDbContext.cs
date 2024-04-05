@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using Microsoft.EntityFrameworkCore;
+using TaskManager.Domain.Abstractions.Entities;
 using TaskManager.Infrastructure.Http.Internal;
 
 namespace TaskManager.Infrastructure.Data
@@ -28,6 +30,19 @@ namespace TaskManager.Infrastructure.Data
             {
                 builder.HasQueryFilter(t => t.TenantId == _tenantId);
             });
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<TenantEntity>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.TenantId = _tenantId;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
