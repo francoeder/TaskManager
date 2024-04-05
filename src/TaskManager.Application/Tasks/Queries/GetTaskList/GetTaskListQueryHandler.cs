@@ -21,7 +21,6 @@ namespace TaskManager.Application.Tasks.Queries.GetTaskList
 
         public async Task<Result<List<TaskResponse>>> Handle(GetTaskListQuery request, CancellationToken cancellationToken)
         {
-            // Get list of Task, filtering by request.Title
             Expression<Func<Domain.Entities.Task, bool>> predicate =
                 task => string.IsNullOrWhiteSpace(request.Title) || task.Title.Contains(request.Title);
 
@@ -30,10 +29,8 @@ namespace TaskManager.Application.Tasks.Queries.GetTaskList
                 task => task.DueDate,
                 true);
 
-            // Map the list of Task to a list of TaskResponse
             var response = _mapper.Map<List<TaskResponse>>(taskLlist);
 
-            // Return the list of TaskResponse
             return response;
         }
     }
