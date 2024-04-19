@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Domain.Abstractions.Entities;
 using TaskManager.Infrastructure.Http.Internal;
 

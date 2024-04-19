@@ -5,7 +5,7 @@ using TaskManager.Domain.Shared;
 
 namespace TaskManager.Application.Tasks.Commands.CreateTask
 {
-    internal sealed class CreateTaskCommandHandler : ICommandHandler<CreateTaskCommand>
+    public sealed class CreateTaskCommandHandler : ICommandHandler<CreateTaskCommand>
     {
         private readonly IRepository<Domain.Entities.Task> _taskRepository;
         private readonly IMapper _mapper;
